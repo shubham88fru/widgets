@@ -5,8 +5,6 @@ const Search = () => {
   const [term, setTerm] = useState('');
   const [results, setResults] = useState([]);
 
-  console.log(results);
-
   useEffect(() => {
     const search = async () => {
       const { data } = await axios.get(`https://en.wikipedia.org/w/api.php`, {
@@ -21,12 +19,23 @@ const Search = () => {
 
       setResults(data.query.search);
     };
-    term && search();
+
+    const timeoutId = setTimeout(() => term && search(), 500);
+
+    return () => clearTimeout(timeoutId); //Called on every subsequent render before the use effect callback
   }, [term]); // null -> after every render, [] -> only after 1st render, [term] -> 1st render and whenever term changes
 
   const renderedResults = results.map((res) => {
     return (
       <div className="item" key={res.pageid}>
+        <div className="right floated content">
+          <a
+            href={`https://en.wikipedia.org?curid=${res.pageid}`}
+            className="ui button"
+          >
+            Go
+          </a>
+        </div>
         <div className="content">
           <div className="header">{res.title}</div>
           <span dangerouslySetInnerHTML={{ __html: res.snippet }}></span>
