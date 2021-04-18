@@ -4,6 +4,8 @@ import Accordian from './components/Accordian';
 import Search from './components/Search';
 import Dropdown from './components/Dropdown';
 import Translate from './components/Translate';
+import Route from './components/Route';
+import Header from './components/Header';
 
 const items = [
   {
@@ -40,15 +42,24 @@ const App = () => {
 
   return (
     <div>
-      {/* <Accordian items={items} /> */}
-      {/* <Search /> */}
-      {/* <Dropdown
-        selected={selected}
-        options={options}
-        onSelectedChange={setSelected}
-      /> */}
-
-      <Translate />
+      <Header />
+      <Route path="/">
+        <Accordian items={items} />
+      </Route>
+      <Route path="/list">
+        <Search />
+      </Route>
+      <Route path="/dropdown">
+        <Dropdown
+          label="Select a color"
+          selected={selected}
+          options={options}
+          onSelectedChange={setSelected}
+        />
+      </Route>
+      <Route path="/translate">
+        <Translate />
+      </Route>
     </div>
   );
 };
